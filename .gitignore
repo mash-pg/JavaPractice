@@ -1,0 +1,21 @@
+# Obsidian
+.obsidian/
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+target/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+
+# OS
+.DS_Store
+Thumbs.db
