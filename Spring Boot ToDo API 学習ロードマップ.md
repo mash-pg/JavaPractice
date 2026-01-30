@@ -15,6 +15,27 @@
 
 ---
 
+## 学習スタイル
+
+> **シニアエンジニア（Claude）× ジュニアエンジニア（自分）形式**
+
+| 役割 | 担当 |
+|------|------|
+| **シニア（Claude）** | 課題を出す、ヒントを与える、コードレビュー、間違いを指摘 |
+| **ジュニア（自分）** | 課題を解く、コードを書く、質問する |
+
+### 進め方
+
+1. シニアが課題と要件を提示
+2. ジュニアが実装を試みる
+3. シニアがコードレビュー（良い点・改善点）
+4. 修正 → 再レビュー → 合格まで繰り返す
+5. 動作確認して次の課題へ
+
+> **ポイント**: 答えを見る前にまず自分で考える。間違えた箇所は記録して復習する。
+
+---
+
 ## 進捗管理
 
 - [x] Phase 1: 環境構築
@@ -25,8 +46,8 @@
 - [x] Phase 6: Repository
 - [x] Phase 7: DB 実装
 - [x] Phase 8: API 実装
-- [ ] Phase 9: パターン適用 ← **次はここ**
-- [ ] Phase 10: 品質ルール
+- [x] Phase 9: パターン適用
+- [ ] Phase 10: 品質ルール ← **次はここ**
 - [ ] Phase 11: テスト
 - [ ] Phase 12: 仕上げ
 
@@ -526,31 +547,66 @@ curl http://localhost:8080/api/todos/999
 
 ---
 
-## Phase 9: Strategy / Factory パターンの適用
+## Phase 9: Strategy / Factory パターンの適用 ✓
 
 > **目的**: 拡張ポイントを設計パターンで整理する。ただし YAGNI を意識。
 
-### 9.1 Strategy パターン
-
-**TodoSortStrategy（ソート戦略）:**
-- 期限順
-- 優先度順
-- 作成日順
-
-**TodoFilterStrategy（フィルタ戦略）:**
-- 未完了のみ
-- 期限切れのみ
-
-> **判断基準**: 単純な if 文で十分なら導入しない。3パターン以上になったら検討。
-
-### 9.2 Factory パターン
+### 9.1 Factory パターン
 
 **TodoFactory:**
-- title の正規化（前後の空白除去など）
-- createdAt の自動付与
-- 初期ステータス設定（OPEN）
+- [x] title の正規化（前後の空白除去 `trim()`）
+- [x] createdAt の自動付与（`LocalDateTime.now()`）
+- [x] 初期ステータス設定（OPEN）
 
 > **目的**: 生成ルールを一箇所に集約し、UseCase をシンプルに保つ。
+
+**役割分担:**
+
+| クラス | 責務 |
+|--------|------|
+| **Factory** | オブジェクトを「作る」 |
+| **UseCase** | 作ったオブジェクトを「保存する」 |
+
+### 9.2 Strategy パターン
+
+**SortStrategy（ソート戦略）:**
+- [x] `CreatedAtSortStrategy` - 作成日順
+- [x] `PrioritySortStrategy` - 優先度順（HIGH → MEDIUM → LOW）
+- [x] `DueDateSortStrategy` - 期限順（null は最後）
+
+**SortStrategyFactory:**
+- [x] sortType に応じて適切な Strategy を選択
+
+### 9.3 API の変更
+
+```
+GET /api/todos              → デフォルト（作成日順）
+GET /api/todos?sort=priority   → 優先度順
+GET /api/todos?sort=dueDate    → 期限順
+```
+
+### 9.4 学んだこと
+
+**Java のソート処理:**
+```java
+// 基本形
+list.sort(Comparator.comparing(Todo::getCreatedAt));
+
+// 降順
+list.sort(Comparator.comparing(Todo::getCreatedAt).reversed());
+
+// null 対応
+list.sort(Comparator.comparing(Todo::getDueDate, Comparator.nullsLast(Comparator.naturalOrder())));
+```
+
+**@RequestParam の使い方:**
+```java
+@GetMapping
+public ResponseEntity<List<TodoResponse>> list(
+    @RequestParam(defaultValue = "createdAt") String sort) { ... }
+```
+
+> **詳細**: [[Phase9 パターン適用]] を参照
 
 ---
 
@@ -674,7 +730,8 @@ void タイトルが空の場合は例外() {
 - [[Phase5 ユースケース]]
 - [[Phase6 Repository]]
 - [[Phase7 DB実装]]
-- [[Phase8 API 実装]]
+- [[Phase8 API実装]]
+- [[Phase9 パターン適用]]
 
 ---
 
@@ -685,7 +742,7 @@ src/main/java/com/example/todo/
 ├── TodoApplication.java
 ├── presentation/
 │   ├── controller/
-│   │   └── TodoController.java
+│   │   └── TodoController.java          ← Phase9で修正（@RequestParam追加）
 │   ├── dto/
 │   │   ├── TodoResponse.java
 │   │   ├── CreateTodoRequest.java
@@ -695,15 +752,15 @@ src/main/java/com/example/todo/
 │       └── GlobalExceptionHandler.java
 ├── application/
 │   └── usecase/
-│       ├── CreateTodoUseCase.java
-│       ├── ListTodosUseCase.java
+│       ├── CreateTodoUseCase.java        ← Phase9で修正（Factory使用）
+│       ├── ListTodosUseCase.java         ← Phase9で修正（Strategy使用）
 │       ├── GetTodoUseCase.java
 │       ├── UpdateTodoUseCase.java
 │       ├── DeleteTodoUseCase.java
 │       └── CompleteTodoUseCase.java
 ├── domain/
 │   ├── entity/
-│   │   └── Todo.java
+│   │   └── Todo.java                     ← Phase9で修正（changeCreatedAt追加）
 │   ├── valueobject/
 │   │   ├── TodoId.java
 │   │   ├── TodoTitle.java
@@ -711,6 +768,14 @@ src/main/java/com/example/todo/
 │   │   └── TodoPriority.java
 │   ├── repository/
 │   │   └── TodoRepository.java
+│   ├── factory/                          ← Phase9で追加
+│   │   └── TodoFactory.java
+│   ├── strategy/                         ← Phase9で追加
+│   │   ├── SortStrategy.java
+│   │   ├── CreatedAtSortStrategy.java
+│   │   ├── PrioritySortStrategy.java
+│   │   ├── DueDateSortStrategy.java
+│   │   └── SortStrategyFactory.java
 │   └── exception/
 │       ├── TodoNotFoundException.java
 │       ├── AlreadyCompletedException.java
