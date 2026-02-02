@@ -47,9 +47,9 @@
 - [x] Phase 7: DB 実装
 - [x] Phase 8: API 実装
 - [x] Phase 9: パターン適用
-- [ ] Phase 10: 品質ルール ← **次はここ**
-- [ ] Phase 11: テスト
-- [ ] Phase 12: 仕上げ
+- [x] Phase 10: 品質ルール
+- [x] Phase 11: テスト
+- [ ] Phase 12: 仕上げ ← **次はここ**
 
 ---
 
@@ -610,7 +610,7 @@ public ResponseEntity<List<TodoResponse>> list(
 
 ---
 
-## Phase 10: 品質ルール
+## Phase 10: 品質ルール ✓
 
 > **目的**: チーム開発を想定したルールを決めておく。
 
@@ -622,64 +622,138 @@ public ResponseEntity<List<TodoResponse>> list(
 | `INFO` | 業務イベント（作成・完了など） |
 | `DEBUG` | 開発時のデバッグ |
 
+**実装したログ:**
+
+| クラス | ログ内容 |
+|--------|---------|
+| `CreateTodoUseCase` | `Todo created: {id}, title: {title}` |
+| `CompleteTodoUseCase` | `Todo completed: {id}` |
+| `GlobalExceptionHandler` | `Exception occurred: {message}` |
+
 ### 10.2 レイヤ境界ルール
 
-- [ ] 入力: DTO で受け取る
-- [ ] 出力: DTO で返す
-- [ ] Entity を外部に漏らさない
+- [x] 入力: DTO で受け取る（`CreateTodoRequest`）
+- [x] 出力: DTO で返す（`TodoResponse`）
+- [x] Entity を外部に漏らさない（Controller 内で変換）
 
-### 10.3 設計チェックリスト
+### 10.3 SOLID 原則
 
-- [ ] SOLID 原則を意識しているか
-- [ ] UseCase が肥大化していないか（100行超えたら分割検討）
-- [ ] DRY しすぎて読みにくくなっていないか
+| 原則 | 名前 | ToDo アプリでの例 |
+|------|------|------------------|
+| **S** | 単一責任 | UseCase を機能ごとに分割 |
+| **O** | 開放閉鎖 | Strategy パターンで拡張可能 |
+| **L** | リスコフ置換 | SortStrategy の実装は置換可能 |
+| **I** | インターフェース分離 | 必要最小限の Repository interface |
+| **D** | 依存性逆転 | UseCase は interface に依存 |
 
-> **可読性 ＞ 抽象化**: 3回同じコードが出てきたら共通化を検討。
+### 10.4 学んだこと
+
+- VO をログ出力する際は `toString()` か `getValue()` が必要
+- ログは `save()` 後（ID 確定後）に出力する
+- プレースホルダー `{}` を使うとパフォーマンスが良い
+- OCP（開放閉鎖の原則）= 既存コードを修正せずに拡張できる設計
+
+> **詳細**: [[Phase10 品質ルール]] を参照
 
 ---
 
-## Phase 11: テスト戦略
+## Phase 11: テスト戦略 ✓
 
-> **目的**: 品質を担保する。どこで何をテストするかを明確にする。
+> **目的**: 品質を担保する。テスターとしての考え方と、開発者としてのテストコード実装を学ぶ。
 
-### 11.1 Domain Unit Test（最優先）
+### 構成
 
-**テスト対象:**
-- [ ] VO の境界値テスト（空文字、最大長、日付）
-- [ ] Entity の状態遷移（OPEN → DONE）
-- [ ] Factory / Strategy のテスト
+```
+Phase 11: テスト
+├── Part A: テストの考え方（テスター向け）
+│   ├── 11.1 テストの種類
+│   ├── 11.2 テスト設計技法
+│   ├── 11.3 テストケース作成
+│   └── 11.4 バグ報告・調査の進め方
+│
+└── Part B: テストコード実装（開発者向け）
+    ├── 11.5 Domain テスト
+    ├── 11.6 UseCase テスト
+    └── 11.7 Controller テスト
+```
+
+---
+
+### Part A: テストの考え方（テスター向け）
+
+#### 11.1 テストの種類
+
+| 種類 | 範囲 | 目的 |
+|------|------|------|
+| 単体テスト | クラス・メソッド単位 | ロジックが正しいか |
+| 結合テスト | 複数コンポーネント | 連携が正しいか |
+| E2E テスト | システム全体 | ユーザー視点で動くか |
+| 回帰テスト | 変更後 | 既存機能が壊れていないか |
+
+#### 11.2 テスト設計技法
+
+- [x] 同値分割法（同じ結果のグループから代表を選ぶ）
+- [x] 境界値分析（境界の前後を重点的にテスト）
+- [x] デシジョンテーブル（条件の組み合わせを表にする）
+
+#### 11.3 テストケース作成
+
+- [x] 正常系・異常系の洗い出し
+- [x] 期待値の明確化（前提条件・操作・期待結果）
+
+#### 11.4 バグ報告・調査
+
+- [x] 再現手順の書き方
+- [x] ログの読み方（一番下の `Caused by` を探す）
+- [x] 原因の切り分け方
+
+---
+
+### Part B: テストコード実装（開発者向け）
+
+#### 11.5 Domain Unit Test
+
+- [x] VO の境界値テスト（空文字、1文字、100文字、101文字）
+- [x] `"a".repeat(n)` で文字列を生成
 
 ```java
 @Test
-void タイトルが空の場合は例外() {
-    assertThrows(InvalidTitleException.class,
+void 空文字は例外() {
+    assertThrows(InvalidTodoTitleException.class,
         () -> new TodoTitle(""));
+}
+
+@Test
+void 最大文字数で作成できる() {
+    String input = "a".repeat(100);
+    TodoTitle title = new TodoTitle(input);
+    assertEquals(100, title.getValue().length());
 }
 ```
 
-### 11.2 Application Unit Test
+#### 11.6 Application Unit Test
 
-- [ ] Repository をモックして UseCase をテスト
-- [ ] 正常系: 期待通りの結果が返る
-- [ ] 異常系: NotFound / BusinessRule 例外
+- [x] Mockito でモック作成（`@Mock`, `@InjectMocks`）
+- [x] `when().thenReturn()` で振る舞い定義
+- [x] 保存後の Todo には ID を設定する
 
-### 11.3 Slice Test
+#### 11.7 Controller Test
 
-**Controller:**
-- [ ] `@WebMvcTest` を使用
-- [ ] 400 / 404 / 409 のレスポンス確認
-- [ ] JSON レスポンスの形式確認
+- [x] `@WebMvcTest` を使用
+- [x] `@MockitoBean` で UseCase をモック化（全ての依存を定義）
+- [x] `MockMvc` で HTTP リクエストをシミュレート
+- [x] 正常系（201 Created）と異常系（400 Bad Request）をテスト
 
-**Repository:**
-- [ ] `@DataJpaTest` を使用
-- [ ] JPA マッピングの確認
-- [ ] クエリが正しく動作するか
+### 11.8 学んだこと
 
-### 11.4 Integration Test
+| 項目 | 内容 |
+|------|------|
+| エラーログの読み方 | 一番下の `Caused by` が本当の原因 |
+| 境界値分析 | 0, 1, 100, 101 文字をテスト |
+| モックの設定 | 保存後の Todo には ID を設定 |
+| @MockitoBean | @MockBean の代わり（Spring Boot 3.4+） |
 
-- [ ] `@SpringBootTest` を使用
-- [ ] CRUD 一連の動作確認
-- [ ] H2 インメモリ DB を使用
+> **詳細**: [[Phase11 テスト]] を参照
 
 ---
 
@@ -732,6 +806,8 @@ void タイトルが空の場合は例外() {
 - [[Phase7 DB実装]]
 - [[Phase8 API実装]]
 - [[Phase9 パターン適用]]
+- [[Phase10 品質ルール]]
+- [[Phase11 テスト]]
 
 ---
 
@@ -749,15 +825,15 @@ src/main/java/com/example/todo/
 │   │   ├── UpdateTodoRequest.java
 │   │   └── ErrorResponse.java
 │   └── exception/
-│       └── GlobalExceptionHandler.java
+│       └── GlobalExceptionHandler.java  ← Phase10でログ追加
 ├── application/
 │   └── usecase/
-│       ├── CreateTodoUseCase.java        ← Phase9で修正（Factory使用）
+│       ├── CreateTodoUseCase.java        ← Phase9でFactory使用、Phase10でログ追加
 │       ├── ListTodosUseCase.java         ← Phase9で修正（Strategy使用）
 │       ├── GetTodoUseCase.java
 │       ├── UpdateTodoUseCase.java
 │       ├── DeleteTodoUseCase.java
-│       └── CompleteTodoUseCase.java
+│       └── CompleteTodoUseCase.java      ← Phase10でログ追加
 ├── domain/
 │   ├── entity/
 │   │   └── Todo.java                     ← Phase9で修正（changeCreatedAt追加）
