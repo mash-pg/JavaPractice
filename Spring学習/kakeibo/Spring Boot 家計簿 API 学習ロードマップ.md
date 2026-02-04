@@ -27,6 +27,7 @@
 - 間違いは具体的に指摘し、ヒントを出して自力で修正させる
 - 各 Phase 完了時に、対応する phase○○.md を作成する（シニア・ジュニアのやり取り、詰まった箇所、学んだことを詳しく記録）
 - ロードマップ（このファイル）の進捗管理とPhaseセクションも更新する
+- 公式ドキュメントを読む習慣を付けさせる（下記「ドキュメントを読む習慣」セクション参照）
 ```
 
 ---
@@ -73,6 +74,56 @@
 5. 動作確認して次の課題へ
 
 > **ポイント**: ToDo で学んだことを「見ないで」書けるか挑戦する。詰まったら ToDo のコードを参考にしてOK。
+
+### ドキュメントを読む習慣（実務で最も差がつくスキル）
+
+> **なぜ重要か**: 実務では「ググって Qiita の記事をコピペ」では通用しない場面が必ず来る。公式ドキュメントを読んで正確な情報を取れるかどうかが、ジュニアとミドルの分かれ目。
+
+**シニアの役割:**
+- 課題を出すとき、関連する公式ドキュメントの URL を一緒に提示する
+- 「この公式ドキュメントのどこに書いてある？」と質問する
+- ジュニアが詰まったとき、答えを直接教えず「公式ドキュメントのこのページを読んでみて」と誘導する
+- コードレビュー時に「このアノテーションの公式の説明を読んだ？」と確認する
+
+**ジュニアの役割:**
+- 新しいアノテーションや機能を使うとき、まず公式ドキュメントを開く
+- 「公式で確認した」「Javadoc を読んだ」と記録に残す
+- エラーが出たら、まず公式のトラブルシューティングを探す
+
+**よく使う公式ドキュメント:**
+
+| ドキュメント | URL | 使う場面 |
+|------------|-----|---------|
+| Spring Boot リファレンス | https://docs.spring.io/spring-boot/reference/ | 設定、機能の確認 |
+| Spring Framework リファレンス | https://docs.spring.io/spring-framework/reference/ | DI、Web MVC、トランザクション |
+| Spring Data JPA リファレンス | https://docs.spring.io/spring-data/jpa/reference/ | Repository、クエリメソッド |
+| Jakarta Validation (Bean Validation) | https://jakarta.ee/specifications/bean-validation/ | @NotNull, @Size などのバリデーション |
+| JUnit 5 ユーザーガイド | https://junit.org/junit5/docs/current/user-guide/ | テストの書き方 |
+| Mockito ドキュメント | https://javadoc.io/doc/org.mockito/mockito-core/latest/org/mockito/Mockito.html | モックの使い方 |
+| Java 17 API (Javadoc) | https://docs.oracle.com/en/java/javase/17/docs/api/ | 標準ライブラリの仕様確認 |
+
+**Phase ごとのドキュメント読み課題:**
+
+| Phase | 読むべきドキュメント | 確認ポイント |
+|-------|-------------------|-------------|
+| Phase 8 | Spring Web MVC: `@RestController`, `@RequestBody`, `@PathVariable`, `ResponseEntity` | 各アノテーションの公式説明を読んで、引数に何が指定できるか確認 |
+| Phase 8 | Bean Validation: `@NotNull`, `@NotBlank`, `@Size`, `@Min` | どのアノテーションをどの型に使えるか確認 |
+| Phase 8 | Spring: `@RestControllerAdvice`, `@ExceptionHandler` | 例外ハンドリングの仕組みを公式で確認 |
+| Phase 9 | Spring Data JPA: Query Methods | メソッド名からクエリを自動生成する命名規則を公式で確認 |
+| Phase 10 | JUnit 5: `@Test`, `assertThrows`, `@BeforeEach` | テストライフサイクルを公式で確認 |
+| Phase 10 | Mockito: `mock()`, `when()`, `verify()` | モックの基本的な使い方を公式で確認 |
+| Phase 10 | Spring Boot Test: `@WebMvcTest`, `MockMvc` | Controller テストの公式ガイドを確認 |
+| Phase 11 | SpringDoc OpenAPI | Swagger UI の設定方法を公式で確認 |
+
+**ドキュメントの読み方（実務テクニック）:**
+
+```
+1. 全部読もうとしない → 目次から必要な箇所を探す
+2. 最初は「Getting Started」や「Quick Start」を見る
+3. サンプルコードを先に見て、説明文を後から読む
+4. 分からない単語があっても、まず流し読みして全体像をつかむ
+5. 英語が辛くても、コード部分は読める → コードから意味を推測する
+```
 
 ---
 
@@ -741,6 +792,26 @@ spring.h2.console.path=/h2-console
 
 > **目的**: HTTP リクエストを受け取り、レスポンスを返す入口を作る。
 
+### 8.0 公式ドキュメントを読む（実装前に必ず）
+
+> **シニアの指示**: コードを書く前に、以下の公式ドキュメントを開いて該当箇所を読む。全部理解しなくていい。「こういうことが書いてある」と把握するだけでOK。
+
+- [ ] **Spring Web MVC** の `@RestController` の説明を読む
+  - https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller.html
+  - 確認: `@Controller` と `@RestController` の違いは何か？
+- [ ] **`@RequestBody`** と **`@PathVariable`** の説明を読む
+  - https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-methods/requestbody.html
+  - 確認: `@RequestBody` は何を JSON から変換してくれるか？
+- [ ] **`ResponseEntity`** の Javadoc を読む
+  - https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/ResponseEntity.html
+  - 確認: `ResponseEntity.status(201).body(...)` の書き方
+- [ ] **Bean Validation** のアノテーション一覧を確認する
+  - https://jakarta.ee/specifications/bean-validation/3.0/jakarta-bean-validation-spec-3.0.html#builtinconstraints
+  - 確認: `@NotNull` と `@NotBlank` の違いは何か？
+- [ ] **`@RestControllerAdvice`** の説明を読む
+  - https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-advice.html
+  - 確認: なぜ例外ハンドリングを Controller の外に出すのか？
+
 ### 8.1 Controller 実装
 
 - [ ] `TransactionController` を作成（`/api/transactions`）
@@ -810,6 +881,18 @@ Invoke-RestMethod -Uri "http://localhost:8080/api/transactions?type=EXPENSE" -Me
 
 > **目的**: Strategy / Factory パターンを家計簿ドメインに適用する。
 
+### 9.0 公式ドキュメントを読む（実装前に必ず）
+
+- [ ] **Spring Data JPA: Query Methods** の命名規則を読む
+  - https://docs.spring.io/spring-data/jpa/reference/jpa/query-methods.html
+  - 確認: `findByTypAndTransactionDateBetween` のようなメソッド名で自動クエリ生成できることを理解する
+- [ ] **`@Query` アノテーション**（JPQL）の書き方を読む
+  - https://docs.spring.io/spring-data/jpa/reference/jpa/query-methods.html#jpa.query-methods.at-query
+  - 確認: メソッド名の自動生成で対応できない複雑なクエリはどう書くか？
+- [ ] **Collectors の Javadoc** を確認する
+  - https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Collectors.html
+  - 確認: `groupingBy`, `summingInt` の使い方（集計で使う）
+
 ### 9.1 Factory パターン
 
 **TransactionFactory:**
@@ -866,12 +949,32 @@ public class CategorySummaryResponse {
 | [ ] | Factory を自力で設計・実装できた |
 | [ ] | Strategy パターンを別のユースケース（集計）に適用できた |
 | [ ] | ToDo のコードを見ないで書けた箇所はどこか |
+| [ ] | Spring Data JPA のクエリメソッド命名規則を公式で確認した |
+| [ ] | 公式ドキュメントを読んで解決できた問題があったか記録した |
 
 ---
 
 ## Phase 10: テスト
 
 > **目的**: ToDo で学んだテスト技法を家計簿でも実践する。
+
+### 10.0 公式ドキュメントを読む（実装前に必ず）
+
+- [ ] **JUnit 5 ユーザーガイド** の基本を読む
+  - https://junit.org/junit5/docs/current/user-guide/#writing-tests
+  - 確認: `@Test`, `@BeforeEach`, `@DisplayName` の使い方
+- [ ] **JUnit 5 のアサーション一覧** を読む
+  - https://junit.org/junit5/docs/current/user-guide/#writing-tests-assertions
+  - 確認: `assertEquals`, `assertThrows`, `assertAll` の違い
+- [ ] **Mockito の公式ドキュメント** を読む
+  - https://javadoc.io/doc/org.mockito/mockito-core/latest/org/mockito/Mockito.html
+  - 確認: `mock()`, `when().thenReturn()`, `verify()` の基本パターン
+- [ ] **Spring Boot Testing** の公式ガイドを読む
+  - https://docs.spring.io/spring-boot/reference/testing/index.html
+  - 確認: `@WebMvcTest` と `@SpringBootTest` の違いは何か？
+- [ ] **MockMvc** の使い方を読む
+  - https://docs.spring.io/spring-framework/reference/testing/spring-mvc-test-framework.html
+  - 確認: `mockMvc.perform(get(...)).andExpect(status().isOk())` の流れ
 
 ### 10.1 Domain テスト
 
@@ -920,6 +1023,15 @@ void 金額が1は正常() {
 ## Phase 11: 仕上げ・振り返り
 
 > **目的**: ドキュメントを整え、ToDo との比較で学びを言語化する。
+
+### 11.0 公式ドキュメントを読む（実装前に必ず）
+
+- [ ] **SpringDoc OpenAPI** の公式を読む
+  - https://springdoc.org/
+  - 確認: pom.xml に何を追加すれば Swagger UI が使えるか？
+- [ ] **OpenAPI 仕様** の概要を読む
+  - https://swagger.io/specification/
+  - 確認: API ドキュメントの自動生成がどういう仕組みか把握する
 
 ### 11.1 Swagger UI
 
@@ -978,6 +1090,9 @@ void 金額が1は正常() {
 | 新しいドメインで設計に迷う | YAGNI を思い出す。今必要なものだけ作る |
 | フィルタリングの実装が分からない | Phase 9 で段階的にやるので Phase 8 では基本 CRUD だけでOK |
 | テストが書けない | まず Domain のテストだけ書く |
+| アノテーションの意味が分からない | **まず公式ドキュメントを開く**。Qiita やブログより先に公式を見る習慣をつける |
+| エラーメッセージが分からない | エラーメッセージをそのまま公式ドキュメントやGitHubのIssueで検索する |
+| 公式が英語で読めない | コード例だけ先に見る。コードは万国共通。説明文は後から読む |
 
 ---
 
