@@ -82,9 +82,9 @@
 - [x] Phase 2: API 設計
 - [x] Phase 3: レイヤ設計
 - [x] Phase 4: ドメイン設計
-- [ ] Phase 5: ユースケース
-- [ ] Phase 6: Repository
-- [ ] Phase 7: DB 実装
+- [x] Phase 5: ユースケース
+- [x] Phase 6: Repository
+- [x] Phase 7: DB 実装
 - [ ] Phase 8: API 実装（基本 CRUD）
 - [ ] Phase 9: パターン適用（集計・フィルタ）
 - [ ] Phase 10: テスト
@@ -148,9 +148,9 @@ ToDo のときにインストール済みのはず。以下が入っているか
 
 **Lombok:**
 
-| 項目 | 内容                                                                                       |
+| 項目       | 内容                                                                                       |
 | -------- | ---------------------------------------------------------------------------------------- |
-| 確認方法 | Help → About Eclipse IDE → `Lombok v1.18.xx` の表記があるか確認                                   |
+| 確認方法     | Help → About Eclipse IDE → `Lombok v1.18.xx` の表記があるか確認                                   |
 | 入っていなければ | `lombok.jar` を実行して Eclipse のインストール先を指定 → Eclipse 再起動![[Pasted image 20260203163638.png]] |
 
 > Lombok は Eclipse Marketplace ではなく、専用インストーラ（`lombok.jar`）で導入する。Maven の依存に `lombok` があるだけではコンパイル時に動かない。
@@ -537,7 +537,7 @@ public class Amount {
 
 ---
 
-## Phase 5: ユースケース設計（Application 層）
+## Phase 5: ユースケース設計（Application 層） ✓
 
 > **目的**: 家計簿の処理フローを定義する。
 
@@ -569,9 +569,11 @@ public class Amount {
 
 ### 5.2 設計原則（ToDo と同じ）
 
-- [ ] **Controller は薄く**: HTTP の受け取りと返却だけ
-- [ ] **業務判断は UseCase に集約**
-- [ ] **@Transactional は UseCase に付ける**
+- [x] **Controller は薄く**: HTTP の受け取りと返却だけ
+- [x] **業務判断は UseCase に集約**
+- [x] **@Transactional は UseCase に付ける**
+
+> **詳細**: [[Spring学習/kakeibo/phase05 ユースケース設計]] を参照
 
 ### 5.3 カテゴリ削除の業務判断
 
@@ -597,7 +599,7 @@ public void execute(Long categoryId) {
 
 ---
 
-## Phase 6: Repository（ポート）設計
+## Phase 6: Repository（ポート）設計 ✓
 
 > **目的**: 2つのエンティティに対する Repository を設計する。
 
@@ -639,13 +641,13 @@ public interface CategoryRepository {
 
 ### 6.3 設計原則
 
-- [ ] Interface は `domain` パッケージに置く
-- [ ] JPA / SQL などの DB 技術を domain に漏らさない
-- [ ] 各 Repository に対して Impl を作る
+- [x] Interface は `domain` パッケージに置く
+- [x] JPA / SQL などの DB 技術を domain に漏らさない
+- [x] 各 Repository に対して Impl を作る
 
 ---
 
-## Phase 7: DB・JPA 実装（Infrastructure）
+## Phase 7: DB・JPA 実装（Infrastructure） ✓
 
 > **目的**: 2つのテーブルを持つ DB 実装を作る。
 
@@ -660,30 +662,32 @@ public interface CategoryRepository {
 
 **テーブル: `transactions`**
 
-| カラム | 型 | 説明 |
-|--------|-----|------|
-| id | BIGINT | 主キー（AUTO_INCREMENT） |
-| type | VARCHAR(20) | INCOME / EXPENSE |
-| amount | INT | 金額（NOT NULL） |
-| category_id | BIGINT | FK → categories.id |
-| description | TEXT | メモ（NULL OK） |
-| transaction_date | DATE | 取引日（NOT NULL） |
-| created_at | TIMESTAMP | 作成日時 |
+| カラム              | 型           | 説明                  |
+| ---------------- | ----------- | ------------------- |
+| id               | BIGINT      | 主キー（AUTO_INCREMENT） |
+| type             | VARCHAR(20) | INCOME / EXPENSE    |
+| amount           | INT         | 金額（NOT NULL）        |
+| category_id      | BIGINT      | FK → categories.id  |
+| description      | TEXT        | メモ（NULL OK）         |
+| transaction_date | DATE        | 取引日（NOT NULL）       |
+| created_at       | TIMESTAMP   | 作成日時                |
 
 ### 7.2 実装チェックリスト
 
 **JPA Entity:**
-- [ ] `TransactionJpaEntity` を作成
-- [ ] `CategoryJpaEntity` を作成
-- [ ] Domain Entity と分離する
+- [x] `TransactionJpaEntity` を作成
+- [x] `CategoryJpaEntity` を作成
+- [x] Domain Entity と分離する
 
 **Repository 実装:**
-- [ ] `TransactionRepositoryImpl` が `TransactionRepository` を実装
-- [ ] `CategoryRepositoryImpl` が `CategoryRepository` を実装
-- [ ] 変換メソッド（`toJpaEntity`, `toDomainEntity`）を Impl 内に書く
+- [x] `TransactionRepositoryImpl` が `TransactionRepository` を実装
+- [x] `CategoryRepositoryImpl` が `CategoryRepository` を実装
+- [x] 変換メソッド（`toJpaEntity`, `toDomainEntity`）を Impl 内に書く
 
 **フィルタリングの実装:**
-- [ ] `findByConditions()` を JPA の動的クエリで実装
+- [ ] `findByConditions()` を JPA の動的クエリで実装（Phase 9 で対応予定）
+
+> **詳細**: [[phase06-07 DB・JPA実装]] を参照
 
 ### 7.3 YAGNI 判断
 
