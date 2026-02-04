@@ -1,6 +1,6 @@
-# Phase 5: ユースケース設計（Application 層）+ Phase 6: Repository インターフェース
+# Phase 5: ユースケース設計（Application 層）
 
-> **目的**: 家計簿の処理フローを定義する。Repository インターフェースも同時に作成。
+> **目的**: 家計簿の処理フローを定義する。Phase 6 で作成した Repository インターフェースを使って UseCase を実装する。
 
 ---
 
@@ -8,81 +8,9 @@
 
 ### 課題の提示（シニア）
 
-> Phase 5 の前提として、UseCase は Repository を使うため、先に Repository インターフェース（Phase 6）も作成する。
-> - Step 0: Repository インターフェース（domain/repository/）
+> Repository インターフェース（Phase 6）が完成したので、UseCase を実装する。
 > - Step 1: Category の UseCase（3つ）
 > - Step 2: Transaction の UseCase（5つ）
-
----
-
-## Step 0: Repository インターフェース
-
-### TransactionRepository（1回目 → 指摘あり → 2回目で合格）
-
-#### 1回目の提出
-
-```java
-public interface TransactionRepository {
-    Transaction save(Transaction transaction);
-    Optional<Transaction> findById(TransactionId id);
-    List<Transaction> findAll();
-    void deleteById(TransactionId id);
-    List<Transaction> existsByCategoryId(
-            TransactionType type,
-            CategoryId categoryId,
-            LocalDate from, LocalDate to);
-}
-```
-
-#### シニアの指摘
-
-| # | 問題 | 詳細 |
-|---|------|------|
-| 1 | `existsByCategoryId` に2つのメソッドが混ざっている | `existsByCategoryId`（boolean）と `findByConditions`（List）は別メソッド |
-
-#### 2回目の提出（合格）
-
-```java
-public interface TransactionRepository {
-    Transaction save(Transaction transaction);
-    Optional<Transaction> findById(TransactionId id);
-    List<Transaction> findAll();
-    void deleteById(TransactionId id);
-    boolean existsByCategoryId(CategoryId id);
-}
-```
-
-> `findByConditions` は Phase 9 で追加予定（YAGNI）
-
-### CategoryRepository（1回目 → 指摘あり → 2回目で合格）
-
-#### 1回目の提出
-
-TransactionRepository をコピペしたため、全メソッドの型が `Transaction` / `TransactionId` になっていた。
-
-#### シニアの指摘
-
-| # | 問題 |
-|---|------|
-| 1 | `save(Transaction transaction)` → `save(Category category)` |
-| 2 | `findById(TransactionId id)` → `findById(CategoryId id)` |
-| 3 | `Optional<Transaction>` → `Optional<Category>` |
-| 4 | `List<Transaction>` → `List<Category>` |
-| 5 | `deleteById(TransactionId id)` → `deleteById(CategoryId id)` |
-
-**学び**: コピペするときは型を必ず確認する。CategoryRepository は Category を扱うリポジトリ。
-
-#### 2回目の提出（合格）
-
-```java
-public interface CategoryRepository {
-    Category save(Category category);
-    Optional<Category> findById(CategoryId id);
-    List<Category> findAll();
-    void deleteById(CategoryId id);
-    boolean existsByName(CategoryName name);
-}
-```
 
 ---
 
@@ -486,7 +414,7 @@ application/usecase/
 
 ## 次の Phase へ
 
-Phase 5 + Phase 6（Repository インターフェース）完了。
+Phase 5 完了。
 
 次は **Phase 7: DB・JPA 実装（Infrastructure）** へ進む。
 - JPA Entity（TransactionJpaEntity, CategoryJpaEntity）の作成

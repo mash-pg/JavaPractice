@@ -1,6 +1,6 @@
-# Phase 6-7: DB・JPA 実装（Infrastructure）
+# Phase 7: DB・JPA 実装（Infrastructure）
 
-> **目的**: 2つのテーブルを持つ DB 実装を作る。Domain Entity と JPA Entity を分離し、Repository 実装クラスで橋渡しする。
+> **目的**: 2つのテーブルを持つ DB 実装を作る。Phase 6 で定義した Repository インターフェース（契約書）を、JPA を使って実装する。Domain Entity と JPA Entity を分離し、Repository 実装クラスで橋渡しする。
 
 ---
 

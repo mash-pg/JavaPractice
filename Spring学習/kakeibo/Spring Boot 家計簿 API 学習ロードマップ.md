@@ -574,6 +574,8 @@ public class Amount {
 - [x] **@Transactional は UseCase に付ける**
 
 > **詳細**: [[Spring学習/kakeibo/phase05 ユースケース設計]] を参照
+>
+> ※ Repository インターフェースの設計は Phase 6 を参照。
 
 ### 5.3 カテゴリ削除の業務判断
 
@@ -599,9 +601,9 @@ public void execute(Long categoryId) {
 
 ---
 
-## Phase 6: Repository（ポート）設計 ✓
+## Phase 6: Repository インターフェース設計 ✓
 
-> **目的**: 2つのエンティティに対する Repository を設計する。
+> **目的**: データアクセスを抽象化する Repository インターフェースを domain 層に設計する。
 
 ### 6.1 Repository Interface
 
@@ -614,10 +616,10 @@ public interface TransactionRepository {
     List<Transaction> findAll();
     void deleteById(TransactionId id);
     boolean existsByCategoryId(CategoryId categoryId);
-    List<Transaction> findByConditions(TransactionType type, CategoryId categoryId,
-                                       LocalDate from, LocalDate to);
 }
 ```
+
+> `findByConditions` は Phase 9 で追加予定（YAGNI）
 
 **CategoryRepository:**
 
@@ -636,14 +638,28 @@ public interface CategoryRepository {
 | 観点 | ToDo | 家計簿 |
 |------|------|--------|
 | Repository 数 | 1 | 2 |
-| 検索メソッド | `findAll()` のみ | `findByConditions()` がある |
+| 検索メソッド | `findAll()` のみ | `findByConditions()` を Phase 9 で追加予定 |
 | 存在チェック | なし | `existsByCategoryId()`, `existsByName()` |
 
 ### 6.3 設計原則
 
-- [x] Interface は `domain` パッケージに置く
+- [x] Interface は `domain` パッケージに置く（DIP）
 - [x] JPA / SQL などの DB 技術を domain に漏らさない
-- [x] 各 Repository に対して Impl を作る
+- [x] 引数・戻り値は VO / Domain Entity を使う（型安全）
+- [x] 各 Repository に対して Impl を作る（Phase 7 で実装）
+
+### 6.4 深堀りトピック
+
+| トピック | 学んだこと |
+|---------|-----------|
+| DIP（依存性逆転） | infrastructure が domain に依存する（逆転） |
+| Repository vs DAO | Repository はドメインの視点、DAO は DB の視点 |
+| VO を引数に使う理由 | Long 同士の取り違えをコンパイル時に防げる |
+| Optional を返す理由 | 「見つからない場合」の判断を UseCase に委ねる |
+| existsByCategoryId の配置 | Transaction テーブルを検索するので TransactionRepository |
+| テスタビリティ | インターフェースだからモックに差し替えてテストできる |
+
+> **詳細**: [[Spring学習/kakeibo/phase06 Repositoryインターフェース設計]] を参照
 
 ---
 
@@ -687,7 +703,7 @@ public interface CategoryRepository {
 **フィルタリングの実装:**
 - [ ] `findByConditions()` を JPA の動的クエリで実装（Phase 9 で対応予定）
 
-> **詳細**: [[phase06-07 DB・JPA実装]] を参照
+> **詳細**: [[Spring学習/kakeibo/phase07 DB・JPA実装]] を参照
 
 ### 7.3 YAGNI 判断
 
@@ -969,6 +985,11 @@ void 金額が1は正常() {
 
 - [[Spring学習/kakeibo/phase01 環境構築]]
 - [[Spring学習/kakeibo/phase02 API設計]]
+- [[Spring学習/kakeibo/phase03 レイヤ設計]]
+- [[Spring学習/kakeibo/phase04 ドメインモデル設計]]
+- [[Spring学習/kakeibo/phase05 ユースケース設計]]
+- [[Spring学習/kakeibo/phase06 Repositoryインターフェース設計]]
+- [[Spring学習/kakeibo/phase07 DB・JPA実装]]
 
 ---
 
