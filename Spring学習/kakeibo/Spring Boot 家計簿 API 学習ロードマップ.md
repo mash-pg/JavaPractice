@@ -15,6 +15,13 @@
 このロードマップの「進捗管理」セクションを確認し、
 次の未完了 Phase からシニア × ジュニア形式で学習を進めてください。
 
+【重要】作業場所について:
+- 実装コード（Java）: C:\dev\kakeibo
+- ドキュメント（md）: C:\Users\user\Documents\JavaPractice\Spring学習\kakeibo
+
+※ phase○○.md などのドキュメントは必ず「ドキュメント」の場所に作成すること。
+※ 実装コードの場所にドキュメントを作成しないこと。
+
 進め方:
 1. シニアが課題と要件を提示する
 2. ジュニアが実装を試みる（答えを先に見せない）
@@ -25,7 +32,8 @@
 ルール:
 - 答えをいきなり教えず、まずジュニアに考えさせる
 - 間違いは具体的に指摘し、ヒントを出して自力で修正させる
-- 各 Phase 完了時に、対応する phase○○.md を作成する（シニア・ジュニアのやり取り、詰まった箇所、学んだことを詳しく記録）
+- 各 Phase 完了時に、対応する phase○○.md を「ドキュメント」の場所に作成する
+  （シニア・ジュニアのやり取り、詰まった箇所、学んだことを詳しく記録）
 - ロードマップ（このファイル）の進捗管理とPhaseセクションも更新する
 - 公式ドキュメントを読む習慣を付けさせる（下記「ドキュメントを読む習慣」セクション参照）
 ```
@@ -129,17 +137,17 @@
 
 ## 進捗管理
 
-- [x] Phase 1: 環境構築
-- [x] Phase 2: API 設計
-- [x] Phase 3: レイヤ設計
-- [x] Phase 4: ドメイン設計
-- [x] Phase 5: ユースケース
-- [x] Phase 6: Repository
-- [x] Phase 7: DB 実装
-- [ ] Phase 8: API 実装（基本 CRUD）
-- [ ] Phase 9: パターン適用（集計・フィルタ）
-- [ ] Phase 10: テスト
-- [ ] Phase 11: 仕上げ・振り返り
+- [x] Phase 1: 環境構築 [[#Phase 1 環境構築 ✓]]
+- [x] Phase 2: API 設計 [[#Phase 2 API 設計 ✓]]
+- [x] Phase 3: レイヤ設計 [[#Phase 3 レイヤ設計（DDD 軽量版） ✓]]
+- [x] Phase 4: ドメイン設計 [[#Phase 4 ドメインモデル設計 ✓]]
+- [x] Phase 5: ユースケース  [[#Phase 5 ユースケース設計（Application 層） ✓]]
+- [x] Phase 6: Repository  [[#Phase 6 Repository インターフェース設計 ✓]]
+- [x] Phase 7: DB 実装 [[#Phase 7 DB・JPA 実装（Infrastructure） ✓]]
+- [x] Phase 8: API 実装（基本 CRUD）[[#Phase 8 API 実装（基本 CRUD） ✓]]
+- [x] Phase 9: パターン適用（集計・フィルタ）[[#Phase 9 パターン適用（集計・フィルタ） ✓]]
+- [ ] Phase 10: テスト [[#Phase 10 テスト]]
+- [ ] Phase 11: 仕上げ・振り返り [[#Phase 11 仕上げ・振り返り]]
 
 ---
 
@@ -162,6 +170,7 @@ Phase 11: 仕上げ         → ドキュメント・ToDo との比較振り返�
 ---
 
 ## Phase 1: 環境構築 ✓
+[[#進捗管理]]
 
 > **目的**: ToDo と同じ手順を「自力で」できるか確認する。
 
@@ -370,6 +379,7 @@ kakeibo/
 ---
 
 ## Phase 2: API 設計 ✓
+[[#進捗管理]]
 
 > **目的**: 家計簿アプリの API を「自分で」設計する。ToDo の設計を参考にしつつ、新しいドメインに合わせる。
 
@@ -388,11 +398,11 @@ kakeibo/
 
 **カテゴリ（Category）:**
 
-| メソッド | エンドポイント | 説明 | ステータス |
-|---------|---------------|------|-----------|
-| `POST` | `/api/categories` | カテゴリを作成 | 201 |
-| `GET` | `/api/categories` | カテゴリ一覧を取得 | 200 |
-| `DELETE` | `/api/categories/{id}` | カテゴリを削除 | 204 |
+| メソッド     | エンドポイント                | 説明        | ステータス |
+| -------- | ---------------------- | --------- | ----- |
+| `POST`   | `/api/categories`      | カテゴリを作成   | 201   |
+| `GET`    | `/api/categories`      | カテゴリ一覧を取得 | 200   |
+| `DELETE` | `/api/categories/{id}` | カテゴリを削除   | 204   |
 
 ### 2.2 フィルタリング（クエリパラメータ）
 
@@ -454,6 +464,7 @@ GET /api/transactions?type=EXPENSE&category=食費     → 複合フィルタ
 ---
 
 ## Phase 3: レイヤ設計（DDD 軽量版） ✓
+[[#進捗管理]]
 
 > **目的**: ToDo で学んだレイヤ構成を「自力で」再現する。
 
@@ -503,6 +514,7 @@ infrastructure ─────┘
 ---
 
 ## Phase 4: ドメインモデル設計 ✓
+[[#進捗管理]]
 
 > **目的**: 家計簿ドメインのビジネスルールをコードで表現する。
 
@@ -589,6 +601,7 @@ public class Amount {
 ---
 
 ## Phase 5: ユースケース設計（Application 層） ✓
+[[#進捗管理]]
 
 > **目的**: 家計簿の処理フローを定義する。
 
@@ -653,6 +666,7 @@ public void execute(Long categoryId) {
 ---
 
 ## Phase 6: Repository インターフェース設計 ✓
+[[#進捗管理]]
 
 > **目的**: データアクセスを抽象化する Repository インターフェースを domain 層に設計する。
 
@@ -715,6 +729,7 @@ public interface CategoryRepository {
 ---
 
 ## Phase 7: DB・JPA 実装（Infrastructure） ✓
+[[#進捗管理]]
 
 > **目的**: 2つのテーブルを持つ DB 実装を作る。
 
@@ -788,117 +803,78 @@ spring.h2.console.path=/h2-console
 
 ---
 
-## Phase 8: API 実装（基本 CRUD）
+## Phase 8: API 実装（基本 CRUD） ✓
+[[#進捗管理]]
 
 > **目的**: HTTP リクエストを受け取り、レスポンスを返す入口を作る。
 
-### 8.0 公式ドキュメントを読む（実装前に必ず）
+### 8.1 実装チェックリスト
 
-> **シニアの指示**: コードを書く前に、以下の公式ドキュメントを開いて該当箇所を読む。全部理解しなくていい。「こういうことが書いてある」と把握するだけでOK。
+**DTO:**
+- [x] `CreateTransactionRequest` - 収支登録リクエスト
+- [x] `UpdateTransactionRequest` - 収支更新リクエスト
+- [x] `TransactionResponse` - 収支レスポンス
+- [x] `CreateCategoryRequest` - カテゴリ作成リクエスト
+- [x] `CategoryResponse` - カテゴリレスポンス
+- [x] `ErrorResponse` - エラーレスポンス
 
-- [ ] **Spring Web MVC** の `@RestController` の説明を読む
-  - https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller.html
-  - 確認: `@Controller` と `@RestController` の違いは何か？
-- [ ] **`@RequestBody`** と **`@PathVariable`** の説明を読む
-  - https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-methods/requestbody.html
-  - 確認: `@RequestBody` は何を JSON から変換してくれるか？
-- [ ] **`ResponseEntity`** の Javadoc を読む
-  - https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/ResponseEntity.html
-  - 確認: `ResponseEntity.status(201).body(...)` の書き方
-- [ ] **Bean Validation** のアノテーション一覧を確認する
-  - https://jakarta.ee/specifications/bean-validation/3.0/jakarta-bean-validation-spec-3.0.html#builtinconstraints
-  - 確認: `@NotNull` と `@NotBlank` の違いは何か？
-- [ ] **`@RestControllerAdvice`** の説明を読む
-  - https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-advice.html
-  - 確認: なぜ例外ハンドリングを Controller の外に出すのか？
+**Controller:**
+- [x] `CategoryController`（`/api/categories`）
+- [x] `TransactionController`（`/api/transactions`）
 
-### 8.1 Controller 実装
+**例外ハンドリング:**
+- [x] `GlobalExceptionHandler` - 例外 → HTTP ステータス変換
 
-- [ ] `TransactionController` を作成（`/api/transactions`）
-- [ ] `CategoryController` を作成（`/api/categories`）
-- [ ] Request DTO にバリデーションを付ける
-- [ ] Response DTO を固定
+**UseCase 修正:**
+- [x] `CreateCategoryUseCase` - 引数を String に変更
+- [x] `CreateTransactionUseCase` - 引数をプリミティブ型に変更
+- [x] `UpdateTransactionUseCase` - 引数をプリミティブ型に変更
 
-### 8.2 DTO 一覧
+### 8.2 動作確認結果
 
-**Transaction:**
+| API | メソッド | 結果 |
+|-----|---------|------|
+| カテゴリ作成 | POST /api/categories | ✅ 201 |
+| カテゴリ一覧 | GET /api/categories | ✅ 200 |
+| 収支登録 | POST /api/transactions | ✅ 201 |
+| 収支一覧 | GET /api/transactions | ✅ 200 |
+| 収支詳細 | GET /api/transactions/{id} | ✅ 200 |
+| 収支更新 | PUT /api/transactions/{id} | ✅ 200 |
+| 収支削除 | DELETE /api/transactions/{id} | ✅ 204 |
+| 存在しないリソース | GET /api/transactions/999 | ✅ 404 |
+| バリデーションエラー | POST (amount=0) | ✅ 400 |
 
-| クラス | 役割 |
-|--------|------|
-| `TransactionResponse` | レスポンス用 |
-| `CreateTransactionRequest` | 作成リクエスト用 |
-| `UpdateTransactionRequest` | 更新リクエスト用 |
+### 8.3 躓いたポイント・学んだこと
 
-**Category:**
+| トピック | 学んだこと |
+|---------|-----------|
+| DTO と VO の使い分け | DTO は Presentation 層でプリミティブ型、VO は Domain 層 |
+| UseCase の引数 | プリミティブ型で受け取り、UseCase 内で VO に変換 |
+| レイヤの依存方向 | Application → Presentation は NG（依存方向が逆） |
+| id の渡し方 | パスパラメータから取得、Request Body には含めない |
+| 例外ハンドリング | 自作例外は `getMessage()` のみ、Spring 例外は `getBindingResult()` も使える |
+| 調べ方 | 分からないメソッドは Javadoc を見る |
 
-| クラス | 役割 |
-|--------|------|
-| `CategoryResponse` | レスポンス用 |
-| `CreateCategoryRequest` | 作成リクエスト用 |
-
-**共通:**
-
-| クラス | 役割 |
-|--------|------|
-| `ErrorResponse` | エラーレスポンス用 |
-
-### 8.3 例外ハンドリング
-
-| 例外 | HTTP ステータス |
-|------|----------------|
-| `TransactionNotFoundException` | 404 Not Found |
-| `CategoryNotFoundException` | 404 Not Found |
-| `CategoryInUseException` | 409 Conflict |
-| `InvalidAmountException` | 400 Bad Request |
-| `MethodArgumentNotValidException` | 400 Bad Request |
-
-### 8.4 動作確認
-
-**PowerShell:**
-
-```powershell
-# カテゴリ作成
-$body = @{ name = "食費" } | ConvertTo-Json
-Invoke-RestMethod -Uri "http://localhost:8080/api/categories" -Method POST -Body $body -ContentType "application/json"
-
-# カテゴリ一覧
-Invoke-RestMethod -Uri "http://localhost:8080/api/categories" -Method GET
-
-# 収支登録
-$body = @{ type = "EXPENSE"; amount = 1500; categoryId = 1; description = "ランチ"; transactionDate = "2026-01-15" } | ConvertTo-Json
-Invoke-RestMethod -Uri "http://localhost:8080/api/transactions" -Method POST -Body $body -ContentType "application/json"
-
-# 収支一覧
-Invoke-RestMethod -Uri "http://localhost:8080/api/transactions" -Method GET
-
-# フィルタリング
-Invoke-RestMethod -Uri "http://localhost:8080/api/transactions?type=EXPENSE" -Method GET
-```
+> **詳細**: [[phase08_API実装]] を参照（シニア × ジュニアのやり取り、詰まった箇所を詳しく記録）
 
 ---
 
-## Phase 9: パターン適用（集計・フィルタ）
+## Phase 9: パターン適用（集計・フィルタ） ✓
+[[#進捗管理]]
 
 > **目的**: Strategy / Factory パターンを家計簿ドメインに適用する。
 
 ### 9.0 公式ドキュメントを読む（実装前に必ず）
 
-- [ ] **Spring Data JPA: Query Methods** の命名規則を読む
-  - https://docs.spring.io/spring-data/jpa/reference/jpa/query-methods.html
-  - 確認: `findByTypAndTransactionDateBetween` のようなメソッド名で自動クエリ生成できることを理解する
-- [ ] **`@Query` アノテーション**（JPQL）の書き方を読む
-  - https://docs.spring.io/spring-data/jpa/reference/jpa/query-methods.html#jpa.query-methods.at-query
-  - 確認: メソッド名の自動生成で対応できない複雑なクエリはどう書くか？
-- [ ] **Collectors の Javadoc** を確認する
+- [x] **Collectors の Javadoc** を確認する
   - https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Collectors.html
   - 確認: `groupingBy`, `summingInt` の使い方（集計で使う）
 
 ### 9.1 Factory パターン
 
 **TransactionFactory:**
-- [ ] transactionDate 未指定時に `LocalDate.now()` を設定
-- [ ] createdAt の自動付与
-- [ ] type の検証
+- [x] transactionDate 未指定時に `LocalDate.now()` を設定
+- [x] createdAt の自動付与
 
 > **ToDo との比較**: TodoFactory と同じ役割。「生成ルールを一箇所に集約」する。
 
@@ -913,8 +889,13 @@ Invoke-RestMethod -Uri "http://localhost:8080/api/transactions?type=EXPENSE" -Me
 | `MonthlySummaryStrategy` | 月別の収入・支出・残高を集計 |
 | `CategorySummaryStrategy` | カテゴリ別の支出を集計 |
 
-**SummaryStrategyFactory:**
-- [ ] summaryType に応じて適切な Strategy を選択
+**型安全な Result クラス:**
+
+| クラス | 役割 |
+|--------|------|
+| `SummaryResult` | マーカーインターフェース |
+| `MonthlySummaryResult` | 月次集計の結果 |
+| `CategorySummaryResult` | カテゴリ別集計の結果 |
 
 ### 9.3 集計 API
 
@@ -937,7 +918,7 @@ public class MonthlySummaryResponse {
 
 // カテゴリ別サマリー
 public class CategorySummaryResponse {
-    private String categoryName;
+    private Long categoryId;
     private int totalAmount;
 }
 ```
@@ -946,15 +927,27 @@ public class CategorySummaryResponse {
 
 | チェック | 内容 |
 |---------|------|
-| [ ] | Factory を自力で設計・実装できた |
-| [ ] | Strategy パターンを別のユースケース（集計）に適用できた |
-| [ ] | ToDo のコードを見ないで書けた箇所はどこか |
-| [ ] | Spring Data JPA のクエリメソッド命名規則を公式で確認した |
-| [ ] | 公式ドキュメントを読んで解決できた問題があったか記録した |
+| [x] | Factory を自力で設計・実装できた |
+| [x] | Strategy パターンを別のユースケース（集計）に適用できた |
+| [x] | マーカーインターフェースで型安全にできた |
+| [x] | Stream API（groupingBy, summingInt）を使えた |
+
+### 9.6 躓いたポイント・学んだこと
+
+| トピック | 学んだこと |
+|---------|-----------|
+| Factory vs UseCase | Factory は static、UseCase は instance（DI が必要） |
+| マーカーインターフェース | `SummaryResult` で型安全に。`@SuppressWarnings` 不要に |
+| instanceof | 型安全なキャストに使う |
+| JSON キー名 | getter から生成される（getCategoryId → categoryId） |
+| Stream API | `groupingBy` + `summingInt` でカテゴリ別集計 |
+
+> **詳細**: [[Spring学習/kakeibo/phase09 パターン適用]] を参照
 
 ---
 
 ## Phase 10: テスト
+[[#進捗管理]]
 
 > **目的**: ToDo で学んだテスト技法を家計簿でも実践する。
 
@@ -1021,6 +1014,7 @@ void 金額が1は正常() {
 ---
 
 ## Phase 11: 仕上げ・振り返り
+[[#進捗管理]]
 
 > **目的**: ドキュメントを整え、ToDo との比較で学びを言語化する。
 
@@ -1105,6 +1099,8 @@ void 金額が1は正常() {
 - [[Spring学習/kakeibo/phase05 ユースケース設計]]
 - [[Spring学習/kakeibo/phase06 Repositoryインターフェース設計]]
 - [[Spring学習/kakeibo/phase07 DB・JPA実装]]
+- [[Spring学習/kakeibo/Phase08 API実装]]
+- [[Spring学習/kakeibo/phase09 パターン適用]]
 
 ---
 

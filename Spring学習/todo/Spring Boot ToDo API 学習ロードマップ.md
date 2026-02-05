@@ -818,7 +818,7 @@ void 最大文字数で作成できる() {
 - [[Phase06 Repository]]
 - [[Phase07 DB実装]]
 - [[Phase08 API実装]]
-- [[Phase09 パターン適用]]
+- [[Spring学習/todo/Phase09 パターン適用]]
 - [[Phase10 品質ルール]]
 - [[Phase11 テスト]]
 - [[Phase12 仕上げ]]
