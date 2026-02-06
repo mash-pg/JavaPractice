@@ -19,7 +19,7 @@
 - 実装コード（Java）: C:\dev\kakeibo
 - ドキュメント（md）: C:\Users\user\Documents\JavaPractice\Spring学習\kakeibo
 
-※ phase○○.md などのドキュメントは必ず「ドキュメント」の場所に作成すること。
+※ phase○○ ドキュメント名.md などのドキュメントは必ず「ドキュメント」の場所に作成すること。
 ※ 実装コードの場所にドキュメントを作成しないこと。
 
 進め方:
@@ -146,7 +146,7 @@
 - [x] Phase 7: DB 実装 [[#Phase 7 DB・JPA 実装（Infrastructure） ✓]]
 - [x] Phase 8: API 実装（基本 CRUD）[[#Phase 8 API 実装（基本 CRUD） ✓]]
 - [x] Phase 9: パターン適用（集計・フィルタ）[[#Phase 9 パターン適用（集計・フィルタ） ✓]]
-- [ ] Phase 10: テスト [[#Phase 10 テスト]]
+- [x] Phase 10: テスト [[#Phase 10 テスト ✓]]
 - [ ] Phase 11: 仕上げ・振り返り [[#Phase 11 仕上げ・振り返り]]
 
 ---
@@ -946,70 +946,69 @@ public class CategorySummaryResponse {
 
 ---
 
-## Phase 10: テスト
+## Phase 10: テスト ✓
 [[#進捗管理]]
 
 > **目的**: ToDo で学んだテスト技法を家計簿でも実践する。
 
-### 10.0 公式ドキュメントを読む（実装前に必ず）
+### 10.1 実装したテスト
 
-- [ ] **JUnit 5 ユーザーガイド** の基本を読む
-  - https://junit.org/junit5/docs/current/user-guide/#writing-tests
-  - 確認: `@Test`, `@BeforeEach`, `@DisplayName` の使い方
-- [ ] **JUnit 5 のアサーション一覧** を読む
-  - https://junit.org/junit5/docs/current/user-guide/#writing-tests-assertions
-  - 確認: `assertEquals`, `assertThrows`, `assertAll` の違い
-- [ ] **Mockito の公式ドキュメント** を読む
-  - https://javadoc.io/doc/org.mockito/mockito-core/latest/org/mockito/Mockito.html
-  - 確認: `mock()`, `when().thenReturn()`, `verify()` の基本パターン
-- [ ] **Spring Boot Testing** の公式ガイドを読む
-  - https://docs.spring.io/spring-boot/reference/testing/index.html
-  - 確認: `@WebMvcTest` と `@SpringBootTest` の違いは何か？
-- [ ] **MockMvc** の使い方を読む
-  - https://docs.spring.io/spring-framework/reference/testing/spring-mvc-test-framework.html
-  - 確認: `mockMvc.perform(get(...)).andExpect(status().isOk())` の流れ
+**Domain テスト:**
+- [x] `AmountTest` - 境界値テスト（null, 0, 1, -1, Integer.MAX_VALUE）
+- [x] `CategoryNameTest` - 境界値テスト（null, 空文字, 1文字, 50文字, 51文字）
 
-### 10.1 Domain テスト
+**UseCase テスト:**
+- [x] `DeleteCategoryUseCaseTest` - モックを使ったテスト（3ケース）
+  - カテゴリが存在しない → `CategoryNotFoundException`
+  - カテゴリが使用中 → `CategoryInUseException`
+  - 正常に削除 → `deleteById` が呼ばれる
 
-- [ ] `Amount` の境界値テスト（0, 1, -1, Integer.MAX_VALUE）
-- [ ] `CategoryName` の境界値テスト（空文字, 1文字, 50文字, 51文字）
-- [ ] `Transaction` の生成テスト
+**Controller テスト:**
+- [x] `CategoryControllerTest` - HTTP 層のテスト
+  - DELETE /api/categories/{id} → 204
+  - POST /api/categories → 201
+
+### 10.2 学んだこと
+
+| テスト種類 | 対象 | 使う技術 |
+|-----------|------|---------|
+| Domain テスト | VO | JUnit 5（assertThrows, assertEquals） |
+| UseCase テスト | ビジネスロジック | Mockito（mock, when, verify） |
+| Controller テスト | HTTP 層 | @WebMvcTest, MockMvc, @MockitoBean |
+
+### 10.3 モックの基本パターン
 
 ```java
-@Test
-void 金額が0は例外() {
-    assertThrows(InvalidAmountException.class,
-        () -> new Amount(0));
-}
+// 1. モックを作成
+CategoryRepository categoryRepository = mock(CategoryRepository.class);
 
-@Test
-void 金額が1は正常() {
-    Amount amount = new Amount(1);
-    assertEquals(1, amount.getValue());
-}
+// 2. モックの振る舞いを定義
+when(categoryRepository.findById(any())).thenReturn(Optional.of(category));
+
+// 3. テスト対象を実行
+useCase.execute(1L);
+
+// 4. 検証
+verify(categoryRepository).deleteById(any());
 ```
 
-### 10.2 UseCase テスト
+### 10.4 躓いたポイント
 
-- [ ] `CreateTransactionUseCase` のモックテスト
-- [ ] `DeleteCategoryUseCase` の使用中チェックテスト
-- [ ] `GetMonthlySummaryUseCase` の集計テスト
+| 問題 | 原因 | 解決策 |
+|------|------|--------|
+| `useCase` が null | インスタンスを作成していなかった | `@BeforeEach` で new |
+| 正常系で例外発生 | `Optional.empty()` を返していた | `Optional.of(category)` を返す |
+| 使用中テストが失敗 | `existsByCategoryId` の設定忘れ | `when(...).thenReturn(true)` |
 
-> **ToDo との違い**: カテゴリ削除テストでは **2つの Repository をモック** する必要がある。
+### 10.5 自己チェック
 
-### 10.3 Controller テスト
+| チェック | 内容 |
+|---------|------|
+| [x] | 境界値分析でテストケースを設計できた |
+| [x] | モックを使って UseCase テストが書けた |
+| [x] | `@WebMvcTest` で Controller テストが書けた |
 
-- [ ] `@WebMvcTest` を使用
-- [ ] 正常系（201, 200）と異常系（400, 404, 409）をテスト
-- [ ] フィルタリングパラメータのテスト
-
-### 10.4 テスト設計技法の復習
-
-| 技法 | 家計簿での適用例 |
-|------|----------------|
-| 同値分割法 | 金額: 正の数 / 0 / 負の数 |
-| 境界値分析 | Amount: 0, 1 / CategoryName: 0文字, 1文字, 50文字, 51文字 |
-| デシジョンテーブル | カテゴリ削除: 存在する×使用中、存在する×未使用、存在しない |
+> **詳細**: [[Spring学習/kakeibo/phase10 テスト]] を参照
 
 ---
 
