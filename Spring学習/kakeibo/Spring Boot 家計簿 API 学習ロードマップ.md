@@ -147,7 +147,7 @@
 - [x] Phase 8: API 実装（基本 CRUD）[[#Phase 8 API 実装（基本 CRUD） ✓]]
 - [x] Phase 9: パターン適用（集計・フィルタ）[[#Phase 9 パターン適用（集計・フィルタ） ✓]]
 - [x] Phase 10: テスト [[#Phase 10 テスト ✓]]
-- [ ] Phase 11: 仕上げ・振り返り [[#Phase 11 仕上げ・振り返り]]
+- [x] Phase 11: 仕上げ・振り返り [[#Phase 11 仕上げ・振り返り ✓]]
 
 ---
 
@@ -1012,31 +1012,31 @@ verify(categoryRepository).deleteById(any());
 
 ---
 
-## Phase 11: 仕上げ・振り返り
+## Phase 11: 仕上げ・振り返り ✓
 [[#進捗管理]]
 
 > **目的**: ドキュメントを整え、ToDo との比較で学びを言語化する。
 
 ### 11.0 公式ドキュメントを読む（実装前に必ず）
 
-- [ ] **SpringDoc OpenAPI** の公式を読む
+- [x] **SpringDoc OpenAPI** の公式を読む
   - https://springdoc.org/
   - 確認: pom.xml に何を追加すれば Swagger UI が使えるか？
-- [ ] **OpenAPI 仕様** の概要を読む
+- [x] **OpenAPI 仕様** の概要を読む
   - https://swagger.io/specification/
   - 確認: API ドキュメントの自動生成がどういう仕組みか把握する
 
 ### 11.1 Swagger UI
 
-- [ ] OpenAPI / Swagger で API ドキュメント自動生成
-- [ ] http://localhost:8080/swagger-ui/index.html
+- [x] OpenAPI / Swagger で API ドキュメント自動生成
+- [x] http://localhost:8080/swagger-ui/index.html
 
 ### 11.2 README
 
-- [ ] 起動方法
-- [ ] テスト実行方法
-- [ ] API 一覧
-- [ ] Swagger UI / H2 Console の URL
+- [x] 起動方法
+- [x] テスト実行方法
+- [x] API 一覧
+- [x] Swagger UI / H2 Console の URL
 
 ### 11.3 ToDo との比較振り返り（最重要）
 
@@ -1051,7 +1051,24 @@ verify(categoryRepository).deleteById(any());
 | **難しかった点** | フィルタリングの実装で苦労した点は？ |
 | **手が覚えた点** | 見ないで書けるようになったコードはどれか？ |
 
-### 11.4 設計判断ログ
+### 11.4 振り返り結果
+
+**正直な振り返り:**
+- 全ての Phase で ToDo のコードを参照した
+- 全体的に難しかった
+- 「見ないで書ける」レベルにはまだ達していない
+
+**これは問題ではない:**
+- 1回目の再実装（2個目のアプリ）では「見ながら」が普通
+- 「3回繰り返すと手が覚える」がロードマップの方針
+- 重要なのは「写経」ではなく「パターンの理解」
+
+**次のステップ:**
+- 苦手な部分を特定して、その部分だけ「見ないで書く」練習をする
+- 例: VO だけ、UseCase だけ、Controller → UseCase → Repository の流れだけ
+- 15〜30分で1つ書く練習を繰り返す
+
+### 11.5 設計判断ログ
 
 | 判断ポイント | 理由 | ToDo との比較 |
 |-------------|------|--------------|
@@ -1061,17 +1078,27 @@ verify(categoryRepository).deleteById(any());
 | **Factory パターン** | 生成ルールを一箇所に集約 | 同じ |
 | **Category を別エンティティに** | 再利用・一覧表示のため | ToDo にはない新しい判断 |
 
-### 11.5 次のステップへ
+### 11.6 次のステップへ
 
-この家計簿アプリが完成したら：
+**家計簿アプリ Phase 11 完了！**
 
 ```
 ✅ ToDo アプリ（1個目）
-✅ 家計簿アプリ（2個目） ← 今ここ
-→ 予約システム（3個目）← 次はこれ
+✅ 家計簿アプリ（2個目）← 完了！
+→ 部分練習（VO / UseCase / Controller を見ないで書く）← 推奨
+→ 予約システム（3個目）
 → 拡張（Docker、認証など）
 → DDD 深掘り
 ```
+
+**推奨する次のアクション:**
+
+| 優先度 | アクション | 時間目安 |
+|--------|-----------|---------|
+| 1 | 苦手な部分を特定する | 5分 |
+| 2 | その部分だけ「見ないで書く」練習 | 15〜30分/回 |
+| 3 | 1週間で5〜7回繰り返す | 計2〜3時間 |
+| 4 | 予約システム（3個目）に進む | - |
 
 ---
 
@@ -1100,6 +1127,8 @@ verify(categoryRepository).deleteById(any());
 - [[Spring学習/kakeibo/phase07 DB・JPA実装]]
 - [[Spring学習/kakeibo/Phase08 API実装]]
 - [[Spring学習/kakeibo/phase09 パターン適用]]
+- [[Spring学習/kakeibo/phase10 テスト]]
+- [[Spring学習/kakeibo/phase11 仕上げ・振り返り]]
 
 ---
 

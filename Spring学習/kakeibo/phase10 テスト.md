@@ -163,15 +163,15 @@ public class CategoryControllerTest {
 
 ## 自己チェック
 
-| チェック | 内容 |
-|---------|------|
-| [x] | 境界値分析でテストケースを設計できた |
-| [x] | `assertThrows` で例外テストが書けた |
-| [x] | `mock()` でモックを作成できた |
-| [x] | `when().thenReturn()` でモックの戻り値を設定できた |
-| [x] | `verify()` でメソッド呼び出しを検証できた |
-| [x] | `@WebMvcTest` で Controller テストが書けた |
-| [x] | `mockMvc.perform()` で HTTP リクエストを送れた |
+| チェック | 内容                                   |
+| ---- | ------------------------------------ |
+| [x]  | 境界値分析でテストケースを設計できた                   |
+| [x]  | `assertThrows` で例外テストが書けた            |
+| [x]  | `mock()` でモックを作成できた                  |
+| [x]  | `when().thenReturn()` でモックの戻り値を設定できた |
+| [x]  | `verify()` でメソッド呼び出しを検証できた           |
+| [x]  | `@WebMvcTest` で Controller テストが書けた   |
+| [x]  | `mockMvc.perform()` で HTTP リクエストを送れた |
 
 ---
 
