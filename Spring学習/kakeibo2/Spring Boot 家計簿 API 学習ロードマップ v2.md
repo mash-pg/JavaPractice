@@ -19,20 +19,58 @@
 - 実装コード（Java）: C:\dev\kakeibo2
 - ドキュメント（md）: C:\Users\user\Documents\JavaPractice\Spring学習\kakeibo2
 
+【役割分担】（実務に近い形）
+■ ジュニア（学習者 = ユーザー）の担当:
+  - コードを実装する
+  - git add & git commit & git push する
+  - PR を作成する（下記の「PR 作成方法」参照）
+  - レビュー指摘を修正してプッシュする
+  - 「なぜそうするか」を説明する（理解確認）
+  - Approve 後にマージする
+
+■ シニア（Claude）の担当:
+  - 課題と「なぜそうするか」を説明する
+  - コードをレビューして指摘する
+  - 修正確認後に Approve（承認）する
+  - Phase 完了時に md ファイルを更新する
+
+【ジュニア向け PR 作成方法】
+■ 方法1: GitHub CLI（gh）を使う場合
+  ```powershell
+  # feature ブランチにいる状態で
+  gh pr create --title "Phase○○: タイトル" --body "変更内容の説明"
+  ```
+
+■ 方法2: ブラウザから作成する場合
+  1. GitHub のリポジトリページを開く
+  2. 「Compare & pull request」ボタンをクリック
+  3. タイトルと説明を入力
+  4. 「Create pull request」をクリック
+
+■ マージ方法（Approve 後）
+  ```powershell
+  # PR 番号を指定してマージ
+  gh pr merge PR番号 --merge --delete-branch
+  ```
+  または GitHub のブラウザで「Merge pull request」ボタンをクリック
+
 【Git フロー】
 - 各 Phase は feature ブランチで作業する
 - Phase 完了時に PR を作成し、シニア（Claude）がレビューする
 - レビュー通過後に main へマージする
 
 進め方:
-1. feature ブランチを切る（例: feature/phase01-setup）
-2. シニアが課題と「なぜそうするか」を説明する
-3. ジュニアが実装する（理解を確認しながら）
-4. コミットして PR を作成する
-5. シニアが PR をレビュー（良い点・改善点を指摘）
-6. 修正 → 再レビュー → 合格まで繰り返す
-7. main にマージ
-8. Phase が完了したら md ファイルを更新する
+1. ジュニア: feature ブランチを切る（例: feature/phase05-usecase）
+2. シニア: 課題と「なぜそうするか」を説明する
+3. ジュニア: 実装する（理解を確認しながら）
+4. ジュニア: git add → git commit → git push する
+5. ジュニア: PR を作成する（「レビューお願いします」）
+6. シニア: コードレビュー（良い点・改善点を指摘）
+7. ジュニア: 指摘を修正して push する
+8. シニア: 再レビュー → Approve（承認）
+9. ジュニア: main にマージする
+10. ジュニア: ローカルで main に戻って pull する
+11. シニア: Phase 完了時に md ファイルを更新する
 
 ルール:
 - 「なぜそうするか」を必ず説明する（理解重視）
@@ -69,20 +107,43 @@ main（本番相当）
 
 ### 各 Phase の Git フロー
 
+```powershell
+# === 1. ブランチ作成 ===
+git checkout main
+git pull origin main
+git checkout -b feature/phase○○-xxxx
+
+# === 2. 実装 → コミット → プッシュ ===
+# （コードを実装する）
+git status                              # 変更確認
+git add .                               # ステージング
+git commit -m "Phase○○: ○○を実装"       # コミット
+git push -u origin feature/phase○○-xxxx # 初回プッシュ
+
+# === 3. PR 作成 ===
+gh pr create --title "Phase○○: タイトル" --body "説明"
+
+# === 4. レビュー指摘があった場合 ===
+# （コードを修正する）
+git add .
+git commit -m "レビュー指摘修正: ○○を改善"
+git push                                # 2回目以降は push だけでOK
+
+# === 5. Approve 後にマージ ===
+gh pr merge PR番号 --merge --delete-branch
+
+# === 6. main に戻る ===
+git checkout main
+git pull origin main
 ```
-1. git checkout main
-2. git pull origin main
-3. git checkout -b feature/phase○○-xxxx
-4. （実装）
-5. git add .
-6. git commit -m "Phase○○: ○○を実装"
-7. git push -u origin feature/phase○○-xxxx
-8. PR 作成（GitHub）
-9. シニア（Claude）がレビュー
-10. 修正があれば対応してコミット
-11. レビュー通過 → main にマージ
-12. ローカルで main に戻って pull
-```
+
+### ポイント
+
+| 操作 | コマンド | 備考 |
+|------|---------|------|
+| 初回プッシュ | `git push -u origin ブランチ名` | `-u` でリモート追跡設定 |
+| 2回目以降 | `git push` | `-u` 不要 |
+| 変更を持ったままブランチ移動 | `git checkout -b 新ブランチ` | コミット前なら可能 |
 
 ### コミットメッセージ規約
 
@@ -125,9 +186,9 @@ powershell.exe -Command "& 'C:\Program Files\GitHub CLI\gh.exe' pr view PR番号
 - [x] Phase 2: API 設計 [[#Phase 2 API 設計]] ✓
 - [x] Phase 3: レイヤ設計 [[#Phase 3 レイヤ設計]] ✓
 - [x] Phase 4: ドメインモデル設計 [[#Phase 4 ドメインモデル設計]] ✓
-- [ ] Phase 5: ユースケース設計 [[#Phase 5 ユースケース設計]]
-- [ ] Phase 6: Repository インターフェース [[#Phase 6 Repository インターフェース]]
-- [ ] Phase 7: DB・JPA 実装 [[#Phase 7 DB・JPA 実装]]
+- [x] Phase 5: ユースケース設計 [[#Phase 5 ユースケース設計]] ✓
+- [x] Phase 6: Repository インターフェース [[#Phase 6 Repository インターフェース]] ✓
+- [x] Phase 7: DB・JPA 実装 [[#Phase 7 DB・JPA 実装]] ✓
 - [ ] Phase 8: API 実装 [[#Phase 8 API 実装]]
 - [ ] Phase 9: パターン適用 [[#Phase 9 パターン適用]]
 - [ ] Phase 10: テスト [[#Phase 10 テスト]]
@@ -397,6 +458,9 @@ git push -u origin main
 - [[Phase 02 API設計]]
 - [[Phase 03 レイヤー]]
 - [[Phase 04 ドメインモデル設計]]
+- [[Phase 05 ユースケース設計]]
+- [[Phase 06 Repository インターフェース]]
+- [[Phase 07 DB・JPA 実装]]
 
 ---
 
