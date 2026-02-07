@@ -189,7 +189,7 @@ powershell.exe -Command "& 'C:\Program Files\GitHub CLI\gh.exe' pr view PR番号
 - [x] Phase 5: ユースケース設計 [[#Phase 5 ユースケース設計]] ✓
 - [x] Phase 6: Repository インターフェース [[#Phase 6 Repository インターフェース]] ✓
 - [x] Phase 7: DB・JPA 実装 [[#Phase 7 DB・JPA 実装]] ✓
-- [ ] Phase 8: API 実装 [[#Phase 8 API 実装]]
+- [x] Phase 8: API 実装 [[#Phase 8 API 実装]] ✓
 - [ ] Phase 9: パターン適用 [[#Phase 9 パターン適用]]
 - [ ] Phase 10: テスト [[#Phase 10 テスト]]
 - [ ] Phase 11: 仕上げ [[#Phase 11 仕上げ]]
@@ -461,6 +461,7 @@ git push -u origin main
 - [[Phase 05 ユースケース設計]]
 - [[Phase 06 Repository インターフェース]]
 - [[Phase 07 DB・JPA 実装]]
+- [[Phase 08 API実装]]
 
 ---
 

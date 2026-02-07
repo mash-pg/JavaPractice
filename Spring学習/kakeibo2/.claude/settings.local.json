@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(powershell.exe -Command \"cd ''C:\\\\dev\\\\kakeibo2''; git branch\")"
+    ]
+  }
+}
