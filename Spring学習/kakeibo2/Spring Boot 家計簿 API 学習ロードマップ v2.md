@@ -92,6 +92,33 @@
 
 ---
 
+## 学習方針
+
+### Stream API と拡張 for 文の両方を練習する
+
+SES 現場では古い Java バージョン（Java 7 以前）のプロジェクトもある。
+**Stream API だけでなく、拡張 for 文でも書けるようにする。**
+
+```java
+// Stream API（モダン・Java 8+）
+int total = transactions.stream()
+    .filter(t -> t.getType() == TransactionType.INCOME)
+    .mapToInt(t -> t.getAmount().getValue())
+    .sum();
+
+// 拡張 for 文（クラシック・どのバージョンでも可）
+int total = 0;
+for (Transaction t : transactions) {
+    if (t.getType() == TransactionType.INCOME) {
+        total += t.getAmount().getValue();
+    }
+}
+```
+
+**予約システムなど今後の学習では、意識的に両方の書き方で実装する。**
+
+---
+
 ## Git 戦略
 
 ### ブランチ構成
@@ -190,7 +217,7 @@ powershell.exe -Command "& 'C:\Program Files\GitHub CLI\gh.exe' pr view PR番号
 - [x] Phase 6: Repository インターフェース [[#Phase 6 Repository インターフェース]] ✓
 - [x] Phase 7: DB・JPA 実装 [[#Phase 7 DB・JPA 実装]] ✓
 - [x] Phase 8: API 実装 [[#Phase 8 API 実装]] ✓
-- [ ] Phase 9: パターン適用 [[#Phase 9 パターン適用]]
+- [x] Phase 9: パターン適用 [[#Phase 9 パターン適用]] ✓
 - [ ] Phase 10: テスト [[#Phase 10 テスト]]
 - [ ] Phase 11: 仕上げ [[#Phase 11 仕上げ]]
 
@@ -462,6 +489,7 @@ git push -u origin main
 - [[Phase 06 Repository インターフェース]]
 - [[Phase 07 DB・JPA 実装]]
 - [[Phase 08 API実装]]
+- [[Phase 09 パターン適用]]
 
 ---
 
