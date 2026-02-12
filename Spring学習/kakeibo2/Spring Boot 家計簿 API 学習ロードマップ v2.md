@@ -218,8 +218,8 @@ powershell.exe -Command "& 'C:\Program Files\GitHub CLI\gh.exe' pr view PR番号
 - [x] Phase 7: DB・JPA 実装 [[#Phase 7 DB・JPA 実装]] ✓
 - [x] Phase 8: API 実装 [[#Phase 8 API 実装]] ✓
 - [x] Phase 9: パターン適用 [[#Phase 9 パターン適用]] ✓
-- [ ] Phase 10: テスト [[#Phase 10 テスト]]
-- [ ] Phase 11: 仕上げ [[#Phase 11 仕上げ]]
+- [x] Phase 10: テスト [[#Phase 10 テスト]] ✓
+- [x] Phase 11: 仕上げ [[#Phase 11 仕上げ]] ✓
 
 ---
 
@@ -490,6 +490,8 @@ git push -u origin main
 - [[Phase 07 DB・JPA 実装]]
 - [[Phase 08 API実装]]
 - [[Phase 09 パターン適用]]
+- [[Phase 10 テスト]]
+- [[Phase 11 仕上げ]]
 
 ---
 

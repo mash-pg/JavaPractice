@@ -3,7 +3,9 @@
     "allow": [
       "Bash(powershell.exe -Command \"cd ''C:\\\\dev\\\\kakeibo2''; git branch\")",
       "Bash(powershell.exe -Command \"cd C:\\\\dev\\\\kakeibo2; git status; git branch -a\")",
-      "Bash(powershell.exe -Command \"cd C:\\\\dev\\\\kakeibo2; git branch --show-current\")"
+      "Bash(powershell.exe -Command \"cd C:\\\\dev\\\\kakeibo2; git branch --show-current\")",
+      "Bash(powershell.exe -Command \"cd C:\\\\dev\\\\kakeibo2; git status; git branch --show-current\")",
+      "Bash(powershell.exe:*)"
     ]
   }
 }
