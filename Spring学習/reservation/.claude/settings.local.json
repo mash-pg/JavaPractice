@@ -6,7 +6,11 @@
       "Bash(powershell.exe -Command \"& ''C:\\\\Program Files\\\\GitHub CLI\\\\gh.exe'' pr diff 1 --repo mash-pg/reservation\")",
       "Bash(powershell.exe -Command \"& ''C:\\\\Program Files\\\\GitHub CLI\\\\gh.exe'' pr view 1 --repo mash-pg/reservation --json state\")",
       "Bash(powershell.exe -Command \"& ''C:\\\\Program Files\\\\GitHub CLI\\\\gh.exe'' pr view 3 --repo mash-pg/reservation\")",
-      "Bash(powershell.exe -Command \"cd ''C:\\\\dev\\\\reservation''; git log --oneline -10\")"
+      "Bash(powershell.exe -Command \"cd ''C:\\\\dev\\\\reservation''; git log --oneline -10\")",
+      "Bash(powershell.exe -Command \"& ''C:\\\\Program Files\\\\GitHub CLI\\\\gh.exe'' pr view 5 --repo mash-pg/reservation\")",
+      "Bash(powershell.exe -Command \"& ''C:\\\\Program Files\\\\GitHub CLI\\\\gh.exe'' pr diff 5 --repo mash-pg/reservation\")",
+      "Bash(powershell.exe -Command \"& ''C:\\\\Program Files\\\\GitHub CLI\\\\gh.exe'' pr review 5 --repo mash-pg/reservation --approve --body ''LGTM! Phase 5 & 6 完了です。\n\n- Repository インターフェース ✓\n- UseCase 実装 ✓\n- 例外クラス ✓\n\n軽微な指摘: エラーメッセージの日本語が少し不自然ですが、動作に問題なし。次の Phase 7 で JPA 実装を作成すれば、Bean が見つからないエラーも解消されます。''\")",
+      "Bash(powershell.exe -Command \"& ''C:\\\\Program Files\\\\GitHub CLI\\\\gh.exe'' pr comment 5 --repo mash-pg/reservation --body ''LGTM! Phase 5 & 6 完了です。\n\n- Repository インターフェース ✓\n- UseCase 実装 ✓\n- 例外クラス ✓\n\n軽微な指摘: エラーメッセージの日本語が少し不自然ですが、動作に問題なし。次の Phase 7 で JPA 実装を作成すれば、Bean が見つからないエラーも解消されます。\n\nマージしてOK！''\")"
     ]
   }
 }
