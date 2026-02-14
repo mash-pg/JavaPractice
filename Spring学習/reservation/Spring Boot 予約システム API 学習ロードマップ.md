@@ -154,7 +154,7 @@ Phase 10 で意図的にエラーを発生させて調査する練習をする�
 - [x] Phase 4: ドメインモデル設計 [[#Phase 4 ドメインモデル設計]] ✓ 2026-02-12
 - [x] Phase 5: ユースケース設計 [[#Phase 5 ユースケース設計]] ✓ 2026-02-13
 - [x] Phase 6: Repository インターフェース [[#Phase 6 Repository インターフェース]] ✓ 2026-02-13
-- [ ] Phase 7: DB・JPA 実装（H2） [[#Phase 7 DB・JPA 実装]]
+- [x] Phase 7: DB・JPA 実装（H2） [[#Phase 7 DB・JPA 実装]] ✓ 2026-02-14
 - [ ] Phase 8: API 実装 [[#Phase 8 API 実装]]
 - [ ] Phase 9: MyBatis 実装（SQL練習） [[#Phase 9 MyBatis 実装]]
 - [ ] Phase 10: PostgreSQL 切り替え [[#Phase 10 PostgreSQL 切り替え]]
@@ -211,7 +211,6 @@ Phase 10 で意図的にエラーを発生させて調査する練習をする�
 | 作成  | 201 | 400（バリデーション）, 409（重複）   |
 | 更新  | 200 | 404（存在しない）, 409（状態遷移不可） |
 | 削除  | 204 | 404                     |
-|     |     |                         |
 
 ---
 
